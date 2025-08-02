@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin to Win!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.3); }
+            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 30px rgba(255,255,255,0.5); }
+        }
+
+        .wheel-container {
+            position: relative;
+            margin: 40px auto;
+        }
+
+        .wheel {
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            border: 8px solid #fff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+            transition: transform 4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .wheel-segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: 100% 100%;
+            border: 2px solid rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+        }
+
+        .wheel-segment:nth-child(1) { background: #ff6b6b; transform: rotate(0deg); }
+        .wheel-segment:nth-child(2) { background: #4ecdc4; transform: rotate(45deg); }
+        .wheel-segment:nth-child(3) { background: #45b7d1; transform: rotate(90deg); }
+        .wheel-segment:nth-child(4) { background: #96ceb4; transform: rotate(135deg); }
+        .wheel-segment:nth-child(5) { background: #ffeaa7; transform: rotate(180deg); }
+        .wheel-segment:nth-child(6) { background: #dda0dd; transform: rotate(225deg); }
+        .wheel-segment:nth-child(7) { background: #98d8c8; transform: rotate(270deg); }
+        .wheel-segment:nth-child(8) { background: #f7dc6f; transform: rotate(315deg); }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 40px solid #fff;
+            z-index: 10;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+        }
+
+        .spin-button {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .spin-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 107, 107, 0.4);
+        }
+
+        .spin-button:active {
+            transform: translateY(-1px);
+        }
+
+        .spin-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .form-container {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-container.show {
+            display: block;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .prize-announcement {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.2);
+        }
+
+        .submit-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .success-message {
+            display: none;
+            background: #4ecdc4;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+
+        .loading {
+            display: none;
+            color: #667eea;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .wheel {
+                width: 300px;
+                height: 300px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Spin to Win! 🎉</h1>
+        
+        <div class="wheel-container">
+            <div class="wheel-pointer"></div>
+            <div class="wheel" id="wheel">
+                <div class="wheel-segment">Better Luck Next Time</div>
+                <div class="wheel-segment">Free Alphapro Reg bites (1kg)</div>
+                <div class="wheel-segment">Free Beef Treat</div>
+                <div class="wheel-segment">Free Milk Sticks</div>
+                <div class="wheel-segment">Free Dewormer (2pcs Wormshot)</div>
+                <div class="wheel-segment">Free Multivitamins for Dogs</div>
+                <div class="wheel-segment">Free Alphapro Reg bites (5kg)</div>
+                <div class="wheel-segment">Better Luck Next Time</div>
+            </div>
+        </div>
+
+        <button class="spin-button" id="spinButton">NUTRICHUNKS SPIN THE WHEEL!</button>
+
+        <div class="form-container" id="formContainer">
+            <div class="prize-announcement" id="prizeAnnouncement"></div>
+            <p style="margin-bottom: 20px; color: #666;">Congratulations! Please fill out your details below to claim your prize:</p>
+            
+            <form id="prizeForm">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                
+                <button type="submit" class="submit-button">CLAIM MY PRIZE!</button>
+                <div class="loading" id="loading">Submitting your entry...</div>
+            </form>
+            
+            <div class="success-message" id="successMessage">
+                🎉 Success! Your entry has been recorded. We'll contact you soon about your prize!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const wheel = document.getElementById('wheel');
+        const spinButton = document.getElementById('spinButton');
+        const formContainer = document.getElementById('formContainer');
+        const prizeAnnouncement = document.getElementById('prizeAnnouncement');
+        const prizeForm = document.getElementById('prizeForm');
+        const loading = document.getElementById('loading');
+        const successMessage = document.getElementById('successMessage');
+
+        const prizes = [
+            'Better Luck Next Time',
+            'Free Alphapro Reg bites (1kg)',
+            'Free Beef Treat',
+            'Free Milk Sticks',
+            'Free Dewormer (2pcs Wormshot)',
+            'Free Multivitamins for Dogs',
+            'Free Alphapro Reg bites (5kg)',
+            'Better Luck Next Time'
+        ];
+
+        let currentPrize = '';
+        let hasSpun = false;
+
+        spinButton.addEventListener('click', function() {
+            if (hasSpun) return;
+            
+            hasSpun = true;
+            spinButton.disabled = true;
+            spinButton.textContent = 'SPINNING...';
+            
+            // Generate random rotation (multiple full rotations + random segment)
+            const minRotations = 5;
+            const maxRotations = 8;
+            const rotations = Math.random() * (maxRotations - minRotations) + minRotations;
+            const finalRotation = rotations * 360;
+            
+            // Calculate which prize wins (8 segments = 45 degrees each)
+            const segmentAngle = 45;
+            const normalizedAngle = (360 - (finalRotation % 360)) % 360;
+            const winningSegmentIndex = Math.floor(normalizedAngle / segmentAngle);
+            currentPrize = prizes[winningSegmentIndex];
+            
+            // Spin the wheel
+            wheel.style.transform = `rotate(${finalRotation}deg)`;
+            
+            // Show form after spin completes
+            setTimeout(() => {
+                prizeAnnouncement.textContent = `You won: ${currentPrize}!`;
+                formContainer.classList.add('show');
+                spinButton.textContent = 'ALREADY SPUN';
+            }, 4000);
+        });
+
+        prizeForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(prizeForm);
+            
+            // Show loading
+            loading.style.display = 'block';
+            prizeForm.style.opacity = '0.6';
+            
+            // OPTION A: Submit to Google Forms (Free)
+            // Replace YOUR_GOOGLE_FORM_ID with your actual form ID
+            const googleFormId = 'YOUR_GOOGLE_FORM_ID'; // From your Google Form URL
+            const googleFormData = new FormData();
+            
+            // Map your form fields to Google Form entry IDs
+            // You'll need to inspect your Google Form to get these entry IDs
+            googleFormData.append('entry.XXXXXX', formData.get('name')); // Replace XXXXXX with actual entry ID
+            googleFormData.append('entry.YYYYYY', formData.get('email')); // Replace YYYYYY with actual entry ID  
+            googleFormData.append('entry.ZZZZZZ', formData.get('phone')); // Replace ZZZZZZ with actual entry ID
+            googleFormData.append('entry.WWWWWW', currentPrize); // Replace WWWWWW with actual entry ID
+            
+            try {
+                // Submit to Google Forms
+                await fetch(`https://docs.google.com/forms/d/e/${googleFormId}/formResponse`, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: googleFormData
+                });
+                
+                // Success (no-cors means we can't check response, but it usually works)
+                prizeForm.style.display = 'none';
+                loading.style.display = 'none';
+                successMessage.style.display = 'block';
+                
+            } catch (error) {
+                console.error('Submission error:', error);
+                // Still show success since no-cors doesn't give us response info
+                prizeForm.style.display = 'none';
+                loading.style.display = 'none';
+                successMessage.style.display = 'block';
+            }
+        });
+
+        // Add some sparkle effects
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.innerHTML = '✨';
+            sparkle.style.position = 'fixed';
+            sparkle.style.left = Math.random() * window.innerWidth + 'px';
+            sparkle.style.top = Math.random() * window.innerHeight + 'px';
+            sparkle.style.fontSize = Math.random() * 20 + 10 + 'px';
+            sparkle.style.pointerEvents = 'none';
+            sparkle.style.zIndex = '1000';
+            sparkle.style.animation = 'sparkle 2s ease-out forwards';
+            
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 2000);
+        }
+
+        // Add sparkle animation CSS
+        const sparkleCSS = `
+            @keyframes sparkle {
+                0% { opacity: 1; transform: translateY(0) scale(0); }
+                50% { opacity: 1; transform: translateY(-100px) scale(1); }
+                100% { opacity: 0; transform: translateY(-200px) scale(0); }
+            }
+        `;
+        const style = document.createElement('style');
+        style.textContent = sparkleCSS;
+        document.head.appendChild(style);
+
+        // Create sparkles occasionally
+        setInterval(createSparkle, 3000);
+    </script>
+</body>
+</html>
