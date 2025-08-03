@@ -455,18 +455,24 @@
             loading.style.display = 'block';
             prizeForm.style.opacity = '0.6';
             
-            // Use hidden iframe method for better Google Forms compatibility
+            // Debug: Log the data we're trying to submit
+            console.log('Submitting data:');
+            console.log('Name:', formData.get('name'));
+            console.log('Address:', formData.get('address'));
+            console.log('Phone:', formData.get('phone'));
+            console.log('Prize:', currentPrize);
+            
+            // Use the viewform endpoint with auto-submit
             const googleFormId = '1q-bDlzeUUXrPuxQfGcZBbk7Efti91mbFGVaV1uXwhyQ';
-            const formURL = `https://docs.google.com/forms/d/e/${googleFormId}/formResponse`;
             
-            // Create a hidden form
-            const hiddenForm = document.createElement('form');
-            hiddenForm.method = 'POST';
-            hiddenForm.action = formURL;
-            hiddenForm.target = 'hidden_iframe';
-            hiddenForm.style.display = 'none';
+            // Method 1: Create a form that submits to Google Forms
+            const submitForm = document.createElement('form');
+            submitForm.action = `https://docs.google.com/forms/d/${googleFormId}/formResponse`;
+            submitForm.method = 'POST';
+            submitForm.target = 'submit_iframe';
+            submitForm.style.display = 'none';
             
-            // Add form fields
+            // Add all the form fields
             const fields = [
                 { name: 'entry.679261767', value: formData.get('name') },
                 { name: 'entry.1885585701', value: formData.get('address') },
@@ -478,28 +484,42 @@
                 const input = document.createElement('input');
                 input.type = 'hidden';
                 input.name = field.name;
-                input.value = field.value;
-                hiddenForm.appendChild(input);
+                input.value = field.value || '';
+                submitForm.appendChild(input);
             });
             
-            // Create hidden iframe
+            // Create iframe to handle the submission
             const iframe = document.createElement('iframe');
-            iframe.name = 'hidden_iframe';
+            iframe.name = 'submit_iframe';
             iframe.style.display = 'none';
+            iframe.style.width = '1px';
+            iframe.style.height = '1px';
             
-            // Add iframe load event listener
+            // Handle iframe load events
+            let submitted = false;
             iframe.onload = function() {
-                console.log('Form submitted successfully');
-                setTimeout(() => {
-                    document.body.removeChild(hiddenForm);
-                    document.body.removeChild(iframe);
-                }, 1000);
+                if (!submitted) {
+                    submitted = true;
+                    console.log('Form submission completed');
+                    
+                    // Clean up
+                    setTimeout(() => {
+                        if (document.body.contains(submitForm)) {
+                            document.body.removeChild(submitForm);
+                        }
+                        if (document.body.contains(iframe)) {
+                            document.body.removeChild(iframe);
+                        }
+                    }, 1000);
+                }
             };
             
-            // Append to body and submit
+            // Append elements and submit
             document.body.appendChild(iframe);
-            document.body.appendChild(hiddenForm);
-            hiddenForm.submit();
+            document.body.appendChild(submitForm);
+            
+            console.log('Submitting to:', submitForm.action);
+            submitForm.submit();
             
             // Show success message
             setTimeout(() => {
