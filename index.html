@@ -56,49 +56,16 @@
             position: relative;
             box-shadow: 0 0 30px rgba(0,0,0,0.3);
             transition: transform 4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .wheel-segment {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            top: 50%;
-            left: 50%;
-            transform-origin: 0 0;
-            clip-path: polygon(0 0, 100px 0, 86.6px 50px, 50px 86.6px, 0 100px);
-        }
-
-        .wheel-segment:nth-child(1) {
-            background: #ff4444;
-            transform: rotate(0deg);
-        }
-        .wheel-segment:nth-child(2) {
-            background: #44ff44;
-            transform: rotate(45deg);
-        }
-        .wheel-segment:nth-child(3) {
-            background: #4444ff;
-            transform: rotate(90deg);
-        }
-        .wheel-segment:nth-child(4) {
-            background: #ffff44;
-            transform: rotate(135deg);
-        }
-        .wheel-segment:nth-child(5) {
-            background: #ff44ff;
-            transform: rotate(180deg);
-        }
-        .wheel-segment:nth-child(6) {
-            background: #44ffff;
-            transform: rotate(225deg);
-        }
-        .wheel-segment:nth-child(7) {
-            background: #ff8844;
-            transform: rotate(270deg);
-        }
-        .wheel-segment:nth-child(8) {
-            background: #88ff44;
-            transform: rotate(315deg);
+            background: conic-gradient(
+                #ff4444 0deg 45deg,
+                #44ff44 45deg 90deg,
+                #4444ff 90deg 135deg,
+                #ffff44 135deg 180deg,
+                #ff44ff 180deg 225deg,
+                #44ffff 225deg 270deg,
+                #ff8844 270deg 315deg,
+                #88ff44 315deg 360deg
+            );
         }
 
         .wheel-text {
@@ -114,8 +81,8 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 70px;
-            height: 25px;
+            width: 90px;
+            height: 35px;
             background: rgba(255,255,255,0.95);
             border: 1px solid #000;
             border-radius: 4px;
@@ -123,38 +90,40 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 7px;
+            font-size: 8px;
             color: #000;
             text-align: center;
-            line-height: 1.0;
-            padding: 1px;
+            line-height: 1.1;
+            padding: 2px;
             box-shadow: 0 1px 2px rgba(0,0,0,0.3);
             transform-origin: center center;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .text-item:nth-child(1) {
-            transform: translate(-50%, -50%) rotate(22.5deg) translateY(-60px) rotate(-22.5deg);
+            transform: translate(-50%, -50%) rotate(22.5deg) translateY(-150px) rotate(-22.5deg);
         }
         .text-item:nth-child(2) {
-            transform: translate(-50%, -50%) rotate(67.5deg) translateY(-60px) rotate(-67.5deg);
+            transform: translate(-50%, -50%) rotate(67.5deg) translateY(-150px) rotate(-67.5deg);
         }
         .text-item:nth-child(3) {
-            transform: translate(-50%, -50%) rotate(112.5deg) translateY(-60px) rotate(-112.5deg);
+            transform: translate(-50%, -50%) rotate(112.5deg) translateY(-150px) rotate(-112.5deg);
         }
         .text-item:nth-child(4) {
-            transform: translate(-50%, -50%) rotate(157.5deg) translateY(-60px) rotate(-157.5deg);
+            transform: translate(-50%, -50%) rotate(157.5deg) translateY(-150px) rotate(-157.5deg);
         }
         .text-item:nth-child(5) {
-            transform: translate(-50%, -50%) rotate(202.5deg) translateY(-60px) rotate(-202.5deg);
+            transform: translate(-50%, -50%) rotate(202.5deg) translateY(-150px) rotate(-202.5deg);
         }
         .text-item:nth-child(6) {
-            transform: translate(-50%, -50%) rotate(247.5deg) translateY(-60px) rotate(-247.5deg);
+            transform: translate(-50%, -50%) rotate(247.5deg) translateY(-150px) rotate(-247.5deg);
         }
         .text-item:nth-child(7) {
-            transform: translate(-50%, -50%) rotate(292.5deg) translateY(-60px) rotate(-292.5deg);
+            transform: translate(-50%, -50%) rotate(292.5deg) translateY(-150px) rotate(-292.5deg);
         }
         .text-item:nth-child(8) {
-            transform: translate(-50%, -50%) rotate(337.5deg) translateY(-60px) rotate(-337.5deg);
+            transform: translate(-50%, -50%) rotate(337.5deg) translateY(-150px) rotate(-337.5deg);
         }
 
         .wheel-pointer {
@@ -302,6 +271,12 @@
             margin-top: 10px;
         }
 
+        @keyframes sparkle {
+            0% { opacity: 1; transform: translateY(0) scale(0); }
+            50% { opacity: 1; transform: translateY(-100px) scale(1); }
+            100% { opacity: 0; transform: translateY(-200px) scale(0); }
+        }
+
         @media (max-width: 768px) {
             .wheel {
                 width: 300px;
@@ -317,34 +292,34 @@
             }
 
             .text-item {
-                width: 75px;
-                height: 25px;
-                font-size: 7px;
+                width: 95px;
+                height: 35px;
+                font-size: 8px;
             }
 
             .text-item:nth-child(1) {
-                transform: translate(-50%, -50%) rotate(0deg) translateY(-60px);
+                transform: translate(-50%, -50%) rotate(22.5deg) translateY(-112.5px) rotate(-22.5deg);
             }
             .text-item:nth-child(2) {
-                transform: translate(-50%, -50%) rotate(45deg) translateY(-60px);
+                transform: translate(-50%, -50%) rotate(67.5deg) translateY(-112.5px) rotate(-67.5deg);
             }
             .text-item:nth-child(3) {
-                transform: translate(-50%, -50%) rotate(90deg) translateY(-60px);
+                transform: translate(-50%, -50%) rotate(112.5deg) translateY(-112.5px) rotate(-112.5deg);
             }
             .text-item:nth-child(4) {
-                transform: translate(-50%, -50%) rotate(135deg) translateY(-60px);
+                transform: translate(-50%, -50%) rotate(157.5deg) translateY(-112.5px) rotate(-157.5deg);
             }
             .text-item:nth-child(5) {
-                transform: translate(-50%, -50%) rotate(180deg) translateY(-60px);
+                transform: translate(-50%, -50%) rotate(202.5deg) translateY(-112.5px) rotate(-202.5deg);
             }
             .text-item:nth-child(6) {
-                transform: translate(-50%, -50%) rotate(225deg) translateY(-60px);
+                transform: translate(-50%, -50%) rotate(247.5deg) translateY(-112.5px) rotate(-247.5deg);
             }
             .text-item:nth-child(7) {
-                transform: translate(-50%, -50%) rotate(270deg) translateY(-60px);
+                transform: translate(-50%, -50%) rotate(292.5deg) translateY(-112.5px) rotate(-292.5deg);
             }
             .text-item:nth-child(8) {
-                transform: translate(-50%, -50%) rotate(315deg) translateY(-60px);
+                transform: translate(-50%, -50%) rotate(337.5deg) translateY(-112.5px) rotate(-337.5deg);
             }
         }
     </style>
@@ -356,24 +331,15 @@
         <div class="wheel-container">
             <div class="wheel-pointer"></div>
             <div class="wheel" id="wheel">
-                <div class="wheel-segment"></div>
-                <div class="wheel-segment"></div>
-                <div class="wheel-segment"></div>
-                <div class="wheel-segment"></div>
-                <div class="wheel-segment"></div>
-                <div class="wheel-segment"></div>
-                <div class="wheel-segment"></div>
-                <div class="wheel-segment"></div>
-                
                 <div class="wheel-text">
                     <div class="text-item">Better Luck Next Time</div>
                     <div class="text-item">Free Alphapro Reg bites (1kg)</div>
                     <div class="text-item">Free Beef Treat</div>
                     <div class="text-item">Free Milk Sticks</div>
+                    <div class="text-item">Better Luck Next Time</div>
                     <div class="text-item">Free Dewormer (2pcs Wormshot)</div>
                     <div class="text-item">Free Multivitamins for Dogs</div>
                     <div class="text-item">Free Alphapro Reg bites (5kg)</div>
-                    <div class="text-item">Better Luck Next Time</div>
                 </div>
             </div>
         </div>
@@ -424,10 +390,10 @@
             'Free Alphapro Reg bites (1kg)',
             'Free Beef Treat',
             'Free Milk Sticks',
+            'Better Luck Next Time',
             'Free Dewormer (2pcs Wormshot)',
             'Free Multivitamins for Dogs',
-            'Free Alphapro Reg bites (5kg)',
-            'Better Luck Next Time'
+            'Free Alphapro Reg bites (5kg)'
         ];
 
         let currentPrize = '';
@@ -440,25 +406,20 @@
             spinButton.disabled = true;
             spinButton.textContent = 'SPINNING...';
             
-            // Generate random rotation (multiple full rotations + random segment)
             const minRotations = 5;
             const maxRotations = 8;
             const rotations = Math.random() * (maxRotations - minRotations) + minRotations;
             const finalRotation = rotations * 360;
             
-            // Calculate which prize wins (8 segments = 45 degrees each)
             const segmentAngle = 45;
             const normalizedAngle = (360 - (finalRotation % 360)) % 360;
             const winningSegmentIndex = Math.floor(normalizedAngle / segmentAngle);
             currentPrize = prizes[winningSegmentIndex];
             
-            // Spin the wheel
             wheel.style.transform = `rotate(${finalRotation}deg)`;
             
-            // Show form after spin completes only if they won something
             setTimeout(() => {
                 if (currentPrize === 'Better Luck Next Time') {
-                    // Show a simple message for no win
                     const noWinMessage = document.createElement('div');
                     noWinMessage.style.cssText = `
                         background: rgba(255, 255, 255, 0.95);
@@ -476,9 +437,9 @@
                         <p style="font-size: 1.1rem; color: #666;">Thank you for playing!</p>
                     `;
                     formContainer.parentNode.appendChild(noWinMessage);
+
                     spinButton.textContent = 'GAME OVER';
                 } else {
-                    // Show the form for actual prizes
                     prizeAnnouncement.textContent = `Congratulations! You won: ${currentPrize}!`;
                     formContainer.classList.add('show');
                     spinButton.textContent = 'ALREADY SPUN';
@@ -491,43 +452,35 @@
             
             const formData = new FormData(prizeForm);
             
-            // Show loading
             loading.style.display = 'block';
             prizeForm.style.opacity = '0.6';
             
-            // Submit to Google Forms (Free)
-            const googleFormId = '1FAIpQLScXhIkcOJ-Uf3sGkYyKeemqg_RPPN8erD6PjPNUTY9khIzaDQ';
+            const googleFormId = '1q-bDlzeUUXrPuxQfGcZBbk7Efti91mbFGVaV1uXwhyQ';
             const googleFormData = new FormData();
             
-            // Map your form fields to Google Form entry IDs
-            googleFormData.append('entry.679261767', formData.get('name')); // Name field
-            googleFormData.append('entry.1885585701', formData.get('address')); // Address field  
-            googleFormData.append('entry.145018537', formData.get('phone')); // Phone number field
-            googleFormData.append('entry.848351885', currentPrize); // Prize won field
+            googleFormData.append('entry.679261767', formData.get('name'));
+            googleFormData.append('entry.1885585701', formData.get('address'));
+            googleFormData.append('entry.145018537', formData.get('phone'));
+            googleFormData.append('entry.848351885', currentPrize);
             
             try {
-                // Submit to Google Forms
                 await fetch(`https://docs.google.com/forms/d/e/${googleFormId}/formResponse`, {
                     method: 'POST',
                     mode: 'no-cors',
                     body: googleFormData
                 });
                 
-                // Success (no-cors means we can't check response, but it usually works)
                 prizeForm.style.display = 'none';
                 loading.style.display = 'none';
                 successMessage.style.display = 'block';
-                
             } catch (error) {
                 console.error('Submission error:', error);
-                // Still show success since no-cors doesn't give us response info
                 prizeForm.style.display = 'none';
                 loading.style.display = 'none';
                 successMessage.style.display = 'block';
             }
         });
 
-        // Add some sparkle effects
         function createSparkle() {
             const sparkle = document.createElement('div');
             sparkle.innerHTML = '✨';
@@ -546,19 +499,6 @@
             }, 2000);
         }
 
-        // Add sparkle animation CSS
-        const sparkleCSS = `
-            @keyframes sparkle {
-                0% { opacity: 1; transform: translateY(0) scale(0); }
-                50% { opacity: 1; transform: translateY(-100px) scale(1); }
-                100% { opacity: 0; transform: translateY(-200px) scale(0); }
-            }
-        `;
-        const style = document.createElement('style');
-        style.textContent = sparkleCSS;
-        document.head.appendChild(style);
-
-        // Create sparkles occasionally
         setInterval(createSparkle, 3000);
     </script>
 </body>
