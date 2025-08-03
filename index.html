@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spin to Win!</title>
+    <title>Nutrichunks Wheel Of Fortune</title>
     <style>
         * {
             margin: 0;
@@ -28,10 +28,11 @@
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: 2rem;
             margin-bottom: 20px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             animation: glow 2s ease-in-out infinite alternate;
+            white-space: nowrap;
         }
 
         @keyframes glow {
@@ -42,6 +43,9 @@
         .wheel-container {
             position: relative;
             margin: 40px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .wheel {
@@ -50,34 +54,108 @@
             border-radius: 50%;
             border: 8px solid #fff;
             position: relative;
-            overflow: hidden;
             box-shadow: 0 0 30px rgba(0,0,0,0.3);
             transition: transform 4s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         .wheel-segment {
             position: absolute;
-            width: 50%;
-            height: 50%;
-            transform-origin: 100% 100%;
-            border: 2px solid rgba(255,255,255,0.3);
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            left: 50%;
+            transform-origin: 0 0;
+            clip-path: polygon(0 0, 100px 0, 86.6px 50px, 50px 86.6px, 0 100px);
+        }
+
+        .wheel-segment:nth-child(1) {
+            background: #ff4444;
+            transform: rotate(0deg);
+        }
+        .wheel-segment:nth-child(2) {
+            background: #44ff44;
+            transform: rotate(45deg);
+        }
+        .wheel-segment:nth-child(3) {
+            background: #4444ff;
+            transform: rotate(90deg);
+        }
+        .wheel-segment:nth-child(4) {
+            background: #ffff44;
+            transform: rotate(135deg);
+        }
+        .wheel-segment:nth-child(5) {
+            background: #ff44ff;
+            transform: rotate(180deg);
+        }
+        .wheel-segment:nth-child(6) {
+            background: #44ffff;
+            transform: rotate(225deg);
+        }
+        .wheel-segment:nth-child(7) {
+            background: #ff8844;
+            transform: rotate(270deg);
+        }
+        .wheel-segment:nth-child(8) {
+            background: #88ff44;
+            transform: rotate(315deg);
+        }
+
+        .wheel-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .text-item {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 70px;
+            height: 25px;
+            background: rgba(255,255,255,0.95);
+            border: 1px solid #000;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 14px;
-            color: white;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+            font-size: 7px;
+            color: #000;
+            text-align: center;
+            line-height: 1.0;
+            padding: 1px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            transform-origin: center center;
         }
 
-        .wheel-segment:nth-child(1) { background: #ff6b6b; transform: rotate(0deg); }
-        .wheel-segment:nth-child(2) { background: #4ecdc4; transform: rotate(45deg); }
-        .wheel-segment:nth-child(3) { background: #45b7d1; transform: rotate(90deg); }
-        .wheel-segment:nth-child(4) { background: #96ceb4; transform: rotate(135deg); }
-        .wheel-segment:nth-child(5) { background: #ffeaa7; transform: rotate(180deg); }
-        .wheel-segment:nth-child(6) { background: #dda0dd; transform: rotate(225deg); }
-        .wheel-segment:nth-child(7) { background: #98d8c8; transform: rotate(270deg); }
-        .wheel-segment:nth-child(8) { background: #f7dc6f; transform: rotate(315deg); }
+        .text-item:nth-child(1) {
+            transform: translate(-50%, -50%) rotate(22.5deg) translateY(-60px) rotate(-22.5deg);
+        }
+        .text-item:nth-child(2) {
+            transform: translate(-50%, -50%) rotate(67.5deg) translateY(-60px) rotate(-67.5deg);
+        }
+        .text-item:nth-child(3) {
+            transform: translate(-50%, -50%) rotate(112.5deg) translateY(-60px) rotate(-112.5deg);
+        }
+        .text-item:nth-child(4) {
+            transform: translate(-50%, -50%) rotate(157.5deg) translateY(-60px) rotate(-157.5deg);
+        }
+        .text-item:nth-child(5) {
+            transform: translate(-50%, -50%) rotate(202.5deg) translateY(-60px) rotate(-202.5deg);
+        }
+        .text-item:nth-child(6) {
+            transform: translate(-50%, -50%) rotate(247.5deg) translateY(-60px) rotate(-247.5deg);
+        }
+        .text-item:nth-child(7) {
+            transform: translate(-50%, -50%) rotate(292.5deg) translateY(-60px) rotate(-292.5deg);
+        }
+        .text-item:nth-child(8) {
+            transform: translate(-50%, -50%) rotate(337.5deg) translateY(-60px) rotate(-337.5deg);
+        }
 
         .wheel-pointer {
             position: absolute;
@@ -231,34 +309,76 @@
             }
             
             h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             
             .form-container {
                 padding: 20px;
+            }
+
+            .text-item {
+                width: 75px;
+                height: 25px;
+                font-size: 7px;
+            }
+
+            .text-item:nth-child(1) {
+                transform: translate(-50%, -50%) rotate(0deg) translateY(-60px);
+            }
+            .text-item:nth-child(2) {
+                transform: translate(-50%, -50%) rotate(45deg) translateY(-60px);
+            }
+            .text-item:nth-child(3) {
+                transform: translate(-50%, -50%) rotate(90deg) translateY(-60px);
+            }
+            .text-item:nth-child(4) {
+                transform: translate(-50%, -50%) rotate(135deg) translateY(-60px);
+            }
+            .text-item:nth-child(5) {
+                transform: translate(-50%, -50%) rotate(180deg) translateY(-60px);
+            }
+            .text-item:nth-child(6) {
+                transform: translate(-50%, -50%) rotate(225deg) translateY(-60px);
+            }
+            .text-item:nth-child(7) {
+                transform: translate(-50%, -50%) rotate(270deg) translateY(-60px);
+            }
+            .text-item:nth-child(8) {
+                transform: translate(-50%, -50%) rotate(315deg) translateY(-60px);
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎉 Spin to Win! 🎉</h1>
+        <h1>🎉 Nutrichunks Wheel Of Fortune 🎉</h1>
         
         <div class="wheel-container">
             <div class="wheel-pointer"></div>
             <div class="wheel" id="wheel">
-                <div class="wheel-segment">Better Luck Next Time</div>
-                <div class="wheel-segment">Free Alphapro Reg bites (1kg)</div>
-                <div class="wheel-segment">Free Beef Treat</div>
-                <div class="wheel-segment">Free Milk Sticks</div>
-                <div class="wheel-segment">Free Dewormer (2pcs Wormshot)</div>
-                <div class="wheel-segment">Free Multivitamins for Dogs</div>
-                <div class="wheel-segment">Free Alphapro Reg bites (5kg)</div>
-                <div class="wheel-segment">Better Luck Next Time</div>
+                <div class="wheel-segment"></div>
+                <div class="wheel-segment"></div>
+                <div class="wheel-segment"></div>
+                <div class="wheel-segment"></div>
+                <div class="wheel-segment"></div>
+                <div class="wheel-segment"></div>
+                <div class="wheel-segment"></div>
+                <div class="wheel-segment"></div>
+                
+                <div class="wheel-text">
+                    <div class="text-item">Better Luck Next Time</div>
+                    <div class="text-item">Free Alphapro Reg bites (1kg)</div>
+                    <div class="text-item">Free Beef Treat</div>
+                    <div class="text-item">Free Milk Sticks</div>
+                    <div class="text-item">Free Dewormer (2pcs Wormshot)</div>
+                    <div class="text-item">Free Multivitamins for Dogs</div>
+                    <div class="text-item">Free Alphapro Reg bites (5kg)</div>
+                    <div class="text-item">Better Luck Next Time</div>
+                </div>
             </div>
         </div>
 
-        <button class="spin-button" id="spinButton">NUTRICHUNKS SPIN THE WHEEL!</button>
+        <button class="spin-button" id="spinButton">SPIN THE WHEEL!</button>
 
         <div class="form-container" id="formContainer">
             <div class="prize-announcement" id="prizeAnnouncement"></div>
@@ -271,8 +391,8 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="email">Email Address *</label>
-                    <input type="email" id="email" name="email" required>
+                    <label for="address">Address *</label>
+                    <input type="text" id="address" name="address" required placeholder="Your complete address">
                 </div>
                 
                 <div class="form-group">
@@ -335,11 +455,34 @@
             // Spin the wheel
             wheel.style.transform = `rotate(${finalRotation}deg)`;
             
-            // Show form after spin completes
+            // Show form after spin completes only if they won something
             setTimeout(() => {
-                prizeAnnouncement.textContent = `You won: ${currentPrize}!`;
-                formContainer.classList.add('show');
-                spinButton.textContent = 'ALREADY SPUN';
+                if (currentPrize === 'Better Luck Next Time') {
+                    // Show a simple message for no win
+                    const noWinMessage = document.createElement('div');
+                    noWinMessage.style.cssText = `
+                        background: rgba(255, 255, 255, 0.95);
+                        color: #333;
+                        padding: 30px;
+                        border-radius: 20px;
+                        margin-top: 30px;
+                        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                        backdrop-filter: blur(10px);
+                        text-align: center;
+                        animation: slideUp 0.5s ease-out;
+                    `;
+                    noWinMessage.innerHTML = `
+                        <h2 style="color: #ff6b6b; font-size: 2rem; margin-bottom: 15px;">Sorry, Better Luck Next Time!</h2>
+                        <p style="font-size: 1.1rem; color: #666;">Thank you for playing!</p>
+                    `;
+                    formContainer.parentNode.appendChild(noWinMessage);
+                    spinButton.textContent = 'GAME OVER';
+                } else {
+                    // Show the form for actual prizes
+                    prizeAnnouncement.textContent = `Congratulations! You won: ${currentPrize}!`;
+                    formContainer.classList.add('show');
+                    spinButton.textContent = 'ALREADY SPUN';
+                }
             }, 4000);
         });
 
@@ -352,17 +495,15 @@
             loading.style.display = 'block';
             prizeForm.style.opacity = '0.6';
             
-            // OPTION A: Submit to Google Forms (Free)
-            // Replace YOUR_GOOGLE_FORM_ID with your actual form ID
-            const googleFormId = 'YOUR_GOOGLE_FORM_ID'; // From your Google Form URL
+            // Submit to Google Forms (Free)
+            const googleFormId = '1FAIpQLScXhIkcOJ-Uf3sGkYyKeemqg_RPPN8erD6PjPNUTY9khIzaDQ';
             const googleFormData = new FormData();
             
             // Map your form fields to Google Form entry IDs
-            // You'll need to inspect your Google Form to get these entry IDs
-            googleFormData.append('entry.XXXXXX', formData.get('name')); // Replace XXXXXX with actual entry ID
-            googleFormData.append('entry.YYYYYY', formData.get('email')); // Replace YYYYYY with actual entry ID  
-            googleFormData.append('entry.ZZZZZZ', formData.get('phone')); // Replace ZZZZZZ with actual entry ID
-            googleFormData.append('entry.WWWWWW', currentPrize); // Replace WWWWWW with actual entry ID
+            googleFormData.append('entry.679261767', formData.get('name')); // Name field
+            googleFormData.append('entry.1885585701', formData.get('address')); // Address field  
+            googleFormData.append('entry.145018537', formData.get('phone')); // Phone number field
+            googleFormData.append('entry.848351885', currentPrize); // Prize won field
             
             try {
                 // Submit to Google Forms
