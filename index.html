@@ -90,7 +90,7 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 8px;
+            font-size: 12px;
             color: #000;
             text-align: center;
             line-height: 1.1;
@@ -264,11 +264,72 @@
             font-size: 1.1rem;
         }
 
+        .coupon-container {
+            display: none;
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .coupon-container.show {
+            display: block;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .coupon-code {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px dashed rgba(255,255,255,0.5);
+        }
+
+        .coupon-code h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .coupon-code .code {
+            font-family: 'Courier New', monospace;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 3px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .copy-button {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .copy-button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
         .loading {
             display: none;
             color: #667eea;
             font-size: 1.1rem;
             margin-top: 10px;
+        }
+
+        .mystery-text {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
         }
 
         @keyframes sparkle {
@@ -295,7 +356,7 @@
                 line-height: 1.2;
             }
             
-            .form-container {
+            .form-container, .coupon-container {
                 padding: 15px;
                 margin-top: 20px;
             }
@@ -303,7 +364,7 @@
             .text-item {
                 width: 85px;
                 height: 32px;
-                font-size: 7px;
+                font-size: 9px;
             }
 
             .text-item:nth-child(1) {
@@ -344,12 +405,17 @@
             
             .form-group input {
                 padding: 10px;
-                font-size: 16px; /* Prevents zoom on iOS */
+                font-size: 16px;
             }
             
             .submit-button {
                 padding: 12px 30px;
                 font-size: 1rem;
+            }
+
+            .coupon-code .code {
+                font-size: 1.5rem;
+                letter-spacing: 2px;
             }
         }
         
@@ -371,7 +437,7 @@
             .text-item {
                 width: 80px;
                 height: 30px;
-                font-size: 6px;
+                font-size: 8px;
             }
 
             .text-item:nth-child(1) {
@@ -399,12 +465,17 @@
                 transform: translate(-50%, -50%) rotate(337.5deg) translateY(-93px) rotate(-337.5deg);
             }
             
-            .form-container {
+            .form-container, .coupon-container {
                 padding: 12px;
             }
             
             .prize-announcement {
                 font-size: 1.3rem;
+            }
+
+            .coupon-code .code {
+                font-size: 1.2rem;
+                letter-spacing: 1px;
             }
         }
     </style>
@@ -417,14 +488,14 @@
             <div class="wheel-pointer"></div>
             <div class="wheel" id="wheel">
                 <div class="wheel-text">
-                    <div class="text-item">Better Luck Next Time</div>
-                    <div class="text-item">Free Alphapro Reg bites (1kg)</div>
-                    <div class="text-item">Free Beef Treat</div>
-                    <div class="text-item">Free Milk Sticks</div>
-                    <div class="text-item">Better Luck Next Time</div>
-                    <div class="text-item">Free Dewormer (2pcs Wormshot)</div>
-                    <div class="text-item">Free Multivitamins for Dogs</div>
-                    <div class="text-item">Free Alphapro Reg bites (5kg)</div>
+                    <div class="text-item mystery-text">🎁 Prize 1</div>
+                    <div class="text-item mystery-text">🎁 Prize 2</div>
+                    <div class="text-item mystery-text">🎁 Prize 3</div>
+                    <div class="text-item mystery-text">🎁 Prize 4</div>
+                    <div class="text-item mystery-text">🎁 Prize 5</div>
+                    <div class="text-item mystery-text">🎁 Prize 6</div>
+                    <div class="text-item mystery-text">🎁 Prize 7</div>
+                    <div class="text-item mystery-text">🎁 Prize 8</div>
                 </div>
             </div>
         </div>
@@ -433,7 +504,7 @@
 
         <div class="form-container" id="formContainer">
             <div class="prize-announcement" id="prizeAnnouncement"></div>
-            <p style="margin-bottom: 20px; color: #666;">Congratulations! Please fill out your details below to claim your prize:</p>
+            <p style="margin-bottom: 20px; color: #666;">Congratulations! Please fill out your details below to get your coupon code:</p>
             
             <form id="prizeForm">
                 <div class="form-group">
@@ -451,12 +522,24 @@
                     <input type="tel" id="phone" name="phone" required>
                 </div>
                 
-                <button type="submit" class="submit-button">CLAIM MY PRIZE!</button>
-                <div class="loading" id="loading">Submitting your entry...</div>
+                <button type="submit" class="submit-button">GET MY COUPON CODE!</button>
+                <div class="loading" id="loading">Generating your coupon code...</div>
             </form>
+        </div>
+
+        <div class="coupon-container" id="couponContainer">
+            <h2>🎉 Congratulations! 🎉</h2>
+            <p style="margin-bottom: 20px;">Here's your exclusive coupon code:</p>
             
-            <div class="success-message" id="successMessage">
-                🎉 Success! Your entry has been recorded. We'll contact you soon about your prize!
+            <div class="coupon-code">
+                <h3>Your Coupon Code</h3>
+                <div class="code" id="couponCode">LOADING...</div>
+                <button class="copy-button" onclick="copyCouponCode()">📋 Copy Code</button>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; margin-top: 20px;">
+                <p><strong>How to redeem:</strong></p>
+                <p style="margin-top: 10px;">Present this coupon code at any Nutrichunks store or contact us to claim your prize!</p>
             </div>
         </div>
     </div>
@@ -465,12 +548,14 @@
         const wheel = document.getElementById('wheel');
         const spinButton = document.getElementById('spinButton');
         const formContainer = document.getElementById('formContainer');
+        const couponContainer = document.getElementById('couponContainer');
         const prizeAnnouncement = document.getElementById('prizeAnnouncement');
         const prizeForm = document.getElementById('prizeForm');
         const loading = document.getElementById('loading');
-        const successMessage = document.getElementById('successMessage');
+        const couponCodeElement = document.getElementById('couponCode');
 
-        const prizes = [
+        // Hidden actual prizes (customers can't see these)
+        const actualPrizes = [
             'Better Luck Next Time',
             'Free Alphapro Reg bites (1kg)',
             'Free Beef Treat',
@@ -483,6 +568,45 @@
 
         let currentPrize = '';
         let hasSpun = false;
+        let generatedCouponCode = '';
+
+        // Generate unique coupon code
+        function generateCouponCode() {
+            // Generate a unique code: NC + 8 random alphanumeric characters
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = 'NC';
+            for (let i = 0; i < 8; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return result;
+        }
+
+        // Copy coupon code to clipboard
+        function copyCouponCode() {
+            navigator.clipboard.writeText(generatedCouponCode).then(() => {
+                const button = document.querySelector('.copy-button');
+                const originalText = button.textContent;
+                button.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = generatedCouponCode;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const button = document.querySelector('.copy-button');
+                const originalText = button.textContent;
+                button.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
 
         spinButton.addEventListener('click', function() {
             if (hasSpun) return;
@@ -499,7 +623,7 @@
             const segmentAngle = 45;
             const normalizedAngle = (360 - (finalRotation % 360)) % 360;
             const winningSegmentIndex = Math.floor(normalizedAngle / segmentAngle);
-            currentPrize = prizes[winningSegmentIndex];
+            currentPrize = actualPrizes[winningSegmentIndex];
             
             wheel.style.transform = `rotate(${finalRotation}deg)`;
             
@@ -518,14 +642,14 @@
                         animation: slideUp 0.5s ease-out;
                     `;
                     noWinMessage.innerHTML = `
-                        <h2 style="color: #ff6b6b; font-size: 2rem; margin-bottom: 15px;">Sorry, Better Luck Next Time!</h2>
-                        <p style="font-size: 1.1rem; color: #666;">Thank you for playing!</p>
+                        <h2 style="color: #ff6b6b; font-size: 2rem; margin-bottom: 15px;">Sorry, Better Luck Next Time! 😔</h2>
+                        <p style="font-size: 1.1rem; color: #666;">Thank you for playing! Keep an eye out for more chances to win amazing prizes!</p>
                     `;
                     formContainer.parentNode.appendChild(noWinMessage);
 
                     spinButton.textContent = 'GAME OVER';
                 } else {
-                    prizeAnnouncement.textContent = `Congratulations! You won: ${currentPrize}!`;
+                    prizeAnnouncement.textContent = `🎉 Amazing! You won ${currentPrize}! 🎉`;
                     formContainer.classList.add('show');
                     spinButton.textContent = 'ALREADY SPUN';
                 }
@@ -537,6 +661,9 @@
             
             const formData = new FormData(prizeForm);
             
+            // Generate unique coupon code
+            generatedCouponCode = generateCouponCode();
+            
             loading.style.display = 'block';
             prizeForm.style.opacity = '0.6';
             
@@ -546,23 +673,24 @@
             console.log('Address:', formData.get('address'));
             console.log('Phone:', formData.get('phone'));
             console.log('Prize:', currentPrize);
+            console.log('Coupon Code:', generatedCouponCode);
             
-            // Use the viewform endpoint with auto-submit
+            // Submit to Google Forms
             const googleFormId = '1q-bDlzeUUXrPuxQfGcZBbk7Efti91mbFGVaV1uXwhyQ';
             
-            // Method 1: Create a form that submits to Google Forms
             const submitForm = document.createElement('form');
             submitForm.action = `https://docs.google.com/forms/d/${googleFormId}/formResponse`;
             submitForm.method = 'POST';
             submitForm.target = 'submit_iframe';
             submitForm.style.display = 'none';
             
-            // Add all the form fields
+            // Add all the form fields including coupon code
             const fields = [
                 { name: 'entry.679261767', value: formData.get('name') },
                 { name: 'entry.1885585701', value: formData.get('address') },
                 { name: 'entry.145018537', value: formData.get('phone') },
-                { name: 'entry.6896157', value: currentPrize }
+                { name: 'entry.6896157', value: currentPrize },
+                { name: 'entry.783209263', value: generatedCouponCode }
             ];
             
             fields.forEach(field => {
@@ -606,33 +734,52 @@
             console.log('Submitting to:', submitForm.action);
             submitForm.submit();
             
-            // Show success message
+            // Show coupon code after submission
             setTimeout(() => {
-                prizeForm.style.display = 'none';
+                formContainer.style.display = 'none';
                 loading.style.display = 'none';
-                successMessage.style.display = 'block';
+                
+                // Display the coupon code
+                couponCodeElement.textContent = generatedCouponCode;
+                couponContainer.classList.add('show');
+                
+                // Create celebration effect
+                createCelebration();
             }, 2000);
         });
 
+        // Create celebration sparkles
+        function createCelebration() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    createSparkle();
+                }, i * 100);
+            }
+        }
+
         function createSparkle() {
             const sparkle = document.createElement('div');
-            sparkle.innerHTML = '✨';
+            sparkle.innerHTML = ['✨', '🎉', '🎊', '⭐'][Math.floor(Math.random() * 4)];
             sparkle.style.position = 'fixed';
             sparkle.style.left = Math.random() * window.innerWidth + 'px';
             sparkle.style.top = Math.random() * window.innerHeight + 'px';
-            sparkle.style.fontSize = Math.random() * 20 + 10 + 'px';
+            sparkle.style.fontSize = Math.random() * 25 + 15 + 'px';
             sparkle.style.pointerEvents = 'none';
             sparkle.style.zIndex = '1000';
-            sparkle.style.animation = 'sparkle 2s ease-out forwards';
+            sparkle.style.animation = 'sparkle 3s ease-out forwards';
             
             document.body.appendChild(sparkle);
             
             setTimeout(() => {
                 sparkle.remove();
-            }, 2000);
+            }, 3000);
         }
 
-        setInterval(createSparkle, 3000);
+        // Regular sparkle effect
+        setInterval(createSparkle, 4000);
+
+        // Make the copy function globally available
+        window.copyCouponCode = copyCouponCode;
     </script>
 </body>
 </html>
