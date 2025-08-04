@@ -539,7 +539,7 @@
             
             <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; margin-top: 20px;">
                 <p><strong>How to redeem:</strong></p>
-                <p style="margin-top: 10px;">Present this coupon code at any Nutrichunks store or contact us to claim your prize!</p>
+                <p style="margin-top: 10px;">A BMEG-nutrichunks personnel will contact you for the redemption of your prize.</p>
             </div>
         </div>
     </div>
@@ -570,16 +570,25 @@
         let hasSpun = false;
         let generatedCouponCode = '';
 
-        // Generate unique coupon code
+        // Generate “practically unique” coupon code
         function generateCouponCode() {
-            // Generate a unique code: NC + 8 random alphanumeric characters
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let result = 'NC';
-            for (let i = 0; i < 8; i++) {
-                result += characters.charAt(Math.floor(Math.random() * characters.length));
+        
+            // 1) Time chunk: last 5 chars of Date.now() in base-36
+            const timeChunk = Date.now().toString(36).slice(-5).toUpperCase();
+        
+            // 2) Random chunk: 5 random alphanumeric chars
+            let rand = '';
+            for (let i = 0; i < 5; i++) {
+                rand += characters.charAt(
+                    Math.floor(Math.random() * characters.length)
+                );
             }
-            return result;
+        
+            // 3) Combine with “NC” prefix
+            return `NC${timeChunk}${rand}`;
         }
+
 
         // Copy coupon code to clipboard
         function copyCouponCode() {
@@ -783,3 +792,4 @@
     </script>
 </body>
 </html>
+
